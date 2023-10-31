@@ -24,7 +24,7 @@ CREATE TABLE user_diseases
 CREATE TABLE user_schedule
 (
     id                   serial primary key,
-    flower_id            int references flowers (id) not null,
+    flower_id            int references user_flowers(id) not null,
     light_schedule       varchar(255),
     water_schedule       varchar(255),
     fertilizers_schedule varchar(255)
@@ -33,7 +33,7 @@ CREATE TABLE user_schedule
 CREATE TABLE user_volume
 (
     id                 serial primary key,
-    flower_id          int references flowers (id) not null,
+    flower_id          int references user_flowers (id) not null,
     light_volume       varchar(255),
     water_volume       varchar(255),
     fertilizers_volume varchar(255)
@@ -45,3 +45,5 @@ CREATE TABLE user_resources
     object_type object_type,
     volume      varchar(255)
 );
+
+alter table user_diseases add column updated_at timestamp;
