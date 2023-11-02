@@ -2,7 +2,7 @@
 -------------------------------------------------------
 CREATE OR REPLACE FUNCTION check_watering_schedule(
     IN user_flower_id INT,
-    IN current_date DATE
+    IN "current_date" DATE
 )
 RETURNS BOOLEAN
 LANGUAGE PLPGSQL
@@ -86,9 +86,7 @@ $$;
 -----------------------------------------------------
 CREATE OR REPLACE PROCEDURE update_plant_by_id(IN plant_id INT, 
 	IN new_flower_species flower_species, 
-	IN new_soil resources_type, 
-	IN new_height REAL, 
-	IN new_best_climate_type_id INT, 
+	IN new_best_climate_type_id INT,
 	IN new_best_soil_id INT, 
 	IN new_best_water_id INT, 
 	IN new_light_info_id INT, 
@@ -98,8 +96,6 @@ AS $$
 BEGIN
     UPDATE flowers
     SET flower_species = new_flower_species,
-        soil = new_soil,
-        height = new_height,
         best_climate_type_id = new_best_climate_type_id,
         best_soil_id = new_best_soil_id,
         best_water_id = new_best_water_id,
@@ -144,9 +140,10 @@ BEGIN
     FROM user_flowers
     WHERE id = user_plant_id;
 
-    SELECT soil INTO plant_soil
+    SELECT type INTO plant_soil
     FROM flowers
-    WHERE id = user_plant_id;
+    join soils s on s.id = flowers.best_soil_id
+    WHERE flowers.id = user_plant_id;
 
     is_matching := (user_plant_soil = plant_soil);
 
